@@ -17,10 +17,10 @@ export default function RootLayout ({
   children: React.ReactNode
 }) {
   return (
-    <html lang='en' data-theme='rsbooks'>
-      <body className={`${inter.className} h-[100vh]`}>
+    <html lang='en' data-theme='emerald'>
+      <body className={`${inter.className}`}>
         <Header />
-        <Content />
+        <Content>{children}</Content>
         <Footer />
       </body>
     </html>
