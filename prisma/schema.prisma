@@ -39,19 +39,18 @@ model Session {
 }
 
 model User {
-  id             String        @id @default(cuid())
+  id             String    @id @default(cuid())
   name           String?
-  email          String?       @unique
+  email          String?   @unique
   emailVerified  DateTime?
   image          String?
   hashedPassword String?
   favoritesIds   String[]
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
   accounts       Account[]
-  listings       Listing[]
-  reservations   Reservation[]
   sessions       Session[]
+  Order          Order[]
 }
 
 model VerificationToken {
@@ -64,35 +63,42 @@ model VerificationToken {
 
 // Auth End
 
-model Listing {
-  id            String   @id @default(cuid())
-  userId        String
-  title         String
-  description   String
-  imgSrc        String
-  category      String
-  roomCount     Int
-  bathroomCount Int
-  guestCount    Int
-  locationValue String
-  price         Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  reservations Reservation[]
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  description String
+  imgSrc      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  Product     Product[]
 }
 
-model Reservation {
-  id         String   @id @default(cuid())
-  userId     String
-  listingId  String
-  startDate  DateTime
-  endDate    DateTime
-  totalPrice Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+model Order {
+  id              String   @id @default(cuid())
+  userId          String
+  productId       String
+  quantity        Float
+  unit_value      Float
+  total           Float
+  ml_charge       Float
+  vat             Float
+  cost_in_dollars Float
+  dollar_value    Float
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
 
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  listing Listing @relation(fields: [listingId], references: [id], onDelete: Cascade)
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  imgSrc      String
+  categoryId  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  Order       Order[]
 }

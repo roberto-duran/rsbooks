@@ -1,4 +1,4 @@
-export default function Home () {
+export default async function Home () {
   return (
     <div className='p-4 overflow-y-hidden lg:overflow-y-auto'>
       <div className='grid grid-cols-3 gap-4 mb-4'>

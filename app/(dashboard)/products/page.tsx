@@ -1,4 +1,4 @@
-import Products from '../components/pages/products'
+import Products from '../../components/pages/products'
 
 export default function page () {
   // const productsList =

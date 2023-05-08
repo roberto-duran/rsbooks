@@ -7,6 +7,7 @@ import prisma from "@/app/libs/prismadb";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
+
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID as string,
@@ -45,6 +46,8 @@ export const authOptions: AuthOptions = {
   },
   debug: process.env.NODE_ENV === "development",
   session: {
+    maxAge: 86400,
+    updateAge: 43200,
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,

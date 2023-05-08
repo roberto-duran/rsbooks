@@ -3,12 +3,25 @@
 import useSideMenu from '@/app/hooks/useSideMenu'
 import Button from '../Button'
 import { BiMenuAltLeft } from 'react-icons/bi'
+import { signOut } from 'next-auth/react'
+import { User } from '@prisma/client'
+import Avatar from '../Avatar'
 
-export default function Header () {
+type HeaderProps = {
+  currentUser: User | null
+}
+
+export default function Header ({ currentUser }: HeaderProps) {
   const sideMenu = useSideMenu()
   const handleOpenMenu = () => {
     sideMenu.toggle()
   }
+
+  const handleLogout = () => {
+    sideMenu.close()
+    signOut({ callbackUrl: '/session/login' })
+  }
+
   return (
     <nav className='navbar bg-base-100 shadow-md z-50'>
       <div className='flex-none lg:hidden'>
@@ -26,11 +39,7 @@ export default function Header () {
           />
         </div>
         <div className='dropdown dropdown-end'>
-          <label tabIndex={0} className='btn btn-ghost btn-circle avatar'>
-            <div className='w-10 rounded-full'>
-              <img src='/images/stock/photo-1534528741775-53994a69daeb.jpg' />
-            </div>
-          </label>
+          <Avatar src={currentUser?.image} />
           <ul
             tabIndex={0}
             className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52'
@@ -45,7 +54,7 @@ export default function Header () {
               <a>Settings</a>
             </li>
             <li>
-              <a>Logout</a>
+              <a onClick={handleLogout}>Logout</a>
             </li>
           </ul>
         </div>
